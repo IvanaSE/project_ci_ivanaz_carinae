@@ -1,5 +1,6 @@
 *** Settings ***
 Resource         client_operations.robot
+Resource         bedroom_operations.robot
 
 
 *** Test cases ***
@@ -7,7 +8,8 @@ Resource         client_operations.robot
 Test1 - Create Client
     Create New Client
     
-Test2 - Get Last Created Client
+Test2 - Get Client
+    Create New Client
     Get Last Created Client
     
 Test3 - Get Total Number of Clients
@@ -25,6 +27,13 @@ Test6 - Delete Client
     Delete Client
 
 # Bedroom operations
-    
-    
+Test7 - Create Bedroom Busy Top bed twin     
+    Create New Bedroom
 
+Test8 - Get Bedroom
+    Create New Bedroom
+    Get Last Created Bedroom
+    
+Test9 - Get All Bedrooms    
+    Get All Bedrooms
+    
