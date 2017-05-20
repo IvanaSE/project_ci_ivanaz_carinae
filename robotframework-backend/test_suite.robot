@@ -18,9 +18,9 @@ Test3 - Get Total Number of Clients
 Test4 - Get All Clients    
     Get All Clients
 
-#Test5 - Update Client Name
-#   Create New Client
-#   Update Client Name
+Test5 - Update Client Name
+   Create New Client
+   Update Client Name
     
 Test6 - Delete Client
     Create New Client

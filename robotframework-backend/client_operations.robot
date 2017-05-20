@@ -1,7 +1,6 @@
 *** Settings ***
 Library                              HttpLibrary.HTTP
 Library                              String
-Library                              Collections
 
 *** Variables ***
 ${http_context}=                     localhost:8080
@@ -37,9 +36,28 @@ Create Client Data
     ${socialSecurityNumber}=      Generate Random String        9        [NUMBERS]
     ${dictionary}=                 Create Dictionary     id=${id}    name=${name}    createDate=${createDate}    email=${email}    gender=${gender}    socialSecurityNumber=${socialSecurityNumber}
     ${client_json}=                Stringify Json        ${dictionary}
+    Log to Console                 \n"Created json data:"
     Log to Console                 ${client_json}
     [Return]                       ${client_json}             
 
+Update Client Data Name        [Arguments]    ${client}       ${update_value} 
+    ${id}=                        Get Json Value             ${client}         /id 
+    ${name}=                      Set Variable               ${update_value}
+    Set Suite Variable            ${updated_name_suite}      ${name}       
+    ${createDate}=                Get Json Value             ${client}         /createDate
+    ${email}=                     Get Json Value             ${client}         /email
+    ${gender}=                    Get Json Value             ${client}         /gender
+    ${socialSecurityNumber}=      Get Json Value             ${client}         /socialSecurityNumber
+    #Remove " in strings so that they will not get an extra " when doing Stringify Json
+    ${email}=                     Remove String             ${email}                   \"
+    ${gender}=                    Remove String             ${gender}                  \"
+    ${socialSecurityNumber}=      Remove String             ${socialSecurityNumber}    \"
+    ${dictionary}=                Create Dictionary         id=${id}    name=${name}    createDate=${createDate}    email=${email}    gender=${gender}    socialSecurityNumber=${socialSecurityNumber}
+    ${client_json}=               Stringify Json            ${dictionary}
+    Log to Console                \n"Updated json data:"
+    Log to Console                ${client_json}
+    [Return]                      ${client_json}             
+    
 Create New Client
     ${request_body}=           Create Client Data
     Create Http Context        ${http_context}                  ${http_variable}
@@ -68,17 +86,18 @@ Get ID of The Last Client
     ${body_second_request}=                    Get Response Body
     ${last_index}=                             Evaluate      ${body_second_request}-1
     ${json_id}=                                Get Json Value        ${body_first_request}         /${last_index}/id        
-    Log to Console                             ${json_id}         
     [Return]                                   ${json_id}
  
 Get Last Created Client        
     ${clientId}=                    Get ID of The Last Client
     ${get_client_endpoint}=         Catenate       SEPARATOR=       ${get_client_endpoint}        ${clientId}
+    Create Http Context        ${http_context}      ${http_variable}
     GET                        ${get_client_endpoint}
     ${status_code}=            Get Response Status
     ${client_body}=            Get Response Body
     Log to Console             ${status_code}
-    Log to Console             ${client_body}
+    Log to Console             \n"Last created client:"
+    Log to Console             ${clientBody}
     Should contain             ${status_code}	                      ${status_code_OK} 
     [Return]                   ${client_body}
         
@@ -101,26 +120,25 @@ Get All Clients
     Should contain             ${status_code}	                      ${status_code_OK} 
  
 Update Client Name
-    Create Http Context        ${http_context}                  ${http_variable}
-    Set Request Header         Content-Type                     ${header_content_json}
-    Set Request Header         Accept                           ${header_accept_all}  
-
     # Get last created client
-    ${clientBody}=             Get Last Created Client
-    Log to Console             ${clientBody}
-    
-    # Replace with new name
-    ${newName}=                Generate Random String        10        [LOWER]
-    #${updated_clientBody}=      Set Json Value             ${clientBody}         /name     ${newName}   
-    ${updated_clientBody}=      Set Json Value             ${clientBody}         /name     "hej"   
-    # Sätt request body till uppdaterade klienten          
-    ${clientId}=                Get Json Value             ${clientBody}         /id        
-    Set Request Body           ${updated_clientBody}        
-    ${put_update_client_endpoint}=     Catenate       SEPARATOR=        ${put_update_client_endpoint}        ${clientId}
-    PUT                        ${put_update_client_endpoint}
-    ${status_code}=            Get Response Status
-    Log to Console             ${status_code}
-    Should contain             ${status_code}	                      ${status_code_No_Content} 
+    ${clientBody}=                 Get Last Created Client
+    ${clientId}=                   Get Json Value                 ${clientBody}         /id            
+    # Generate new name and update client data
+    ${newName}=                    Generate Random String         10        [LOWER]
+    ${request_body}=               Update Client Data Name        ${clientBody}        ${newName}   
+    # Set request body to updated client and PUT          
+    Create Http Context            ${http_context}                ${http_variable}
+    Set Request Header             Content-Type                   ${header_content_json}
+    Set Request Header             Accept                         ${header_accept_all}        
+    Set Request Body               ${request_body}        
+    ${put_update_client_endpoint}=     Catenate       SEPARATOR=      ${put_update_client_endpoint}        ${clientId}
+    PUT                            ${put_update_client_endpoint}
+    ${status_code}=                Get Response Status
+    Log to Console                 ${status_code}
+    Should contain                 ${status_code}	                  ${status_code_No_Content} 
+    # Check that last created client contains the updated name
+    ${updatedClient}=              Get Last Created Client
+    Should contain                 ${updatedClient}                 ${updated_name_suite}           
  
 Delete Client
     Create Http Context            ${http_context}                  ${http_variable}
