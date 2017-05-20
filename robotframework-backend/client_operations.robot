@@ -68,7 +68,7 @@ Create New Client
     ${status_code}=            Get Response Status
     Log to Console             ${status_code}
     Should contain             ${status_code}	                      ${status_code_No_Content} 
-    # Check that last created client contains the correct name
+    # Assert that last created client contains the correct name
     ${newClient}=             Get Last Created Client
     Should contain            ${newClient}                 ${name_suite}           
      
@@ -109,6 +109,7 @@ Get Total Number of Clients
     Log to Console             ${status_code}
     Log to Console             ${response_body}
     Should contain             ${status_code}	                      ${status_code_OK} 
+    [Return]                   ${response_body}
     
 Get All Clients
     Create Http Context        ${http_context}                      ${http_variable}
@@ -117,8 +118,14 @@ Get All Clients
     ${response_body}=          Get Response Body
     Log to Console             ${status_code}
     Log to Console             ${response_body}
-    Should contain             ${status_code}	                      ${status_code_OK} 
- 
+    # Assert that number of fetched clients are the same numbre that counter enpoint returns    
+    ${parsed}=                 Parse JSON                     ${response_body}
+    ${length}=                 get length                     ${parsed} 
+    ${length}=                 Convert to String          ${length}
+    ${count}=                  Get Total Number of Clients
+    Should be Equal            ${length}                      ${count}
+    Should contain             ${status_code}	              ${status_code_OK} 
+     
 Update Client Name
     # Get last created client
     ${clientBody}=                 Get Last Created Client
@@ -136,7 +143,7 @@ Update Client Name
     ${status_code}=                Get Response Status
     Log to Console                 ${status_code}
     Should contain                 ${status_code}	                  ${status_code_No_Content} 
-    # Check that last created client contains the updated name
+    # Assert that last created client contains the updated name
     ${updatedClient}=              Get Last Created Client
     Should contain                 ${updatedClient}                 ${updated_name_suite}           
  
@@ -149,6 +156,6 @@ Delete Client
     ${status_code}=                Get Response Status
     Log to Console                 ${status_code}
     Should contain                 ${status_code}	                ${status_code_No_Content} 
-    # Check that current last client doesn't contain the name of the recently created client
+    # Assert that current last client doesn't contain the name of the recently created client
     ${lastClient}=                 Get Last Created Client
     Should not contain             ${lastClient}                 ${name_suite}           
