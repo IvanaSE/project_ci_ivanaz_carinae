@@ -2,15 +2,9 @@
 Library                              HttpLibrary.HTTP
 Library                              String
 Library                              Collections
+Resources                            api_variables.robot
 
 *** Variables ***
-${http_context}=                     localhost:8080
-${http_variable}=                    http
-${header_content_json}               application/json
-${header_accept_all}                 */*         
-
-${status_code_OK}                    200
-${status_code_No_Content}            204
 
 #GET endpoints
 ${get_all_bedrooms_endpoint}=         /hotel-rest/webresources/bedroom
