@@ -10,6 +10,7 @@ Resource                        ./pages-and-keywords/bedroom-pages/page_list_bed
 Resource                        ./pages-and-keywords/bedroom-pages/page_new_bedroom.robot
 Resource                        ./pages-and-keywords/reservation-pages/page_list_reservation.robot
 Resource                        ./pages-and-keywords/bill-pages/page_list_bill.robot
+Resource                        ./pages-and-keywords/pages-and-keywords/page_user.robot
 
 Test setup                      Setup
 Test Teardown                   Teardown
@@ -40,4 +41,11 @@ Test5_DeleteClient
     Create new female client
     Perform delete client    
     Perform logout
+    
+Test5_CheckAllLinks
+    Login into the system
+    Test_links
+    Perform logout
+    
+        
     
