@@ -20,6 +20,8 @@ Create new female client
     ${client_email} =                        Catenate      SEPARATOR=      ${client_name}        @test.com    
     ${client_security_number} =              Generate Random String        7          [NUMBERS]
     Set Suite Variable                       ${client_name_suite}                      ${client_name}       
+    Set Suite Variable                       ${client_email_suite}                     ${client_email}       
+    Set Suite Variable                       ${client_security_number_suite}           ${client_security_number}       
     Input text                               ${clientnew_textfield_name}               ${client_name}
     Input text                               ${clientnew_textfield_email}              ${client_email}
     Select checkbox                          ${clientnew_radiobtn_female}
