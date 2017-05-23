@@ -4,7 +4,7 @@ Resource                        client-pages/page_list_client.robot
 Resource                        bedroom-pages/page_list_bedroom.robot
 Resource                        bill-pages/page_list_bill.robot
 Resource                        reservation-pages/page_list_reservation.robot
-Resource                        page_user.robot
+Resource                        user-pages/page_list_user.robot
 
 
 *** Variables ***
@@ -23,8 +23,8 @@ ${dashboard_leftmenu_bedrooms}            xpath=//i[@class='glyphicon glyphicon-
 ${dashboard_leftmenu_bill}                xpath=//i[@class='fa fa-credit-card fa-fw']
 ${dashboard_leftmenu_client}              xpath=//i[@class='fa fa-male fa-fw']
 ${dashboard_leftmenu_reservation}         xpath=//i[@class='fa fa-university fa-fw']
-${dashboard_leftmenu_user}                xpath=//i[@class='fa fa-user fa-fw']
-
+#${dashboard_leftmenu_user}                xpath=//i[@class='fa fa-user fa-fw']
+${dashboard_leftmenu_user}                xpath=//*[@id="side-menu"]/li[7]/a
 
 
 *** Keywords ***
@@ -37,8 +37,8 @@ Perform logout
     Title should be                          ${login_pg_titel_login}   
 
 Show all clients
-    Page should contain element              ${dashboard_show_all_clients}
-    Click Element                            ${dashboard_show_all_clients}
+    Page should contain element              ${dashboard_leftmenu_client}
+    Click Element                            ${dashboard_leftmenu_client}
     Wait Until Page Contains                 ${clientlist_label_clients}
     Title should be                          ${clientlist_label_clients}
     
@@ -63,8 +63,8 @@ Show all bills
 Show all users
     Page should contain element              ${dashboard_leftmenu_user}
     Click Element                            ${dashboard_leftmenu_user}
-    Wait Until Page Contains                 ${user_pg_label_user} 
-    Title should be                          ${user_pg_label_user} 
+    Wait Until Page Contains                 ${userlist_label_user} 
+    Title should be                          ${userlist_label_user} 
     
 Test_links
     Show all bedrooms
