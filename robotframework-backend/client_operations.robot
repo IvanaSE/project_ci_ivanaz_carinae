@@ -1,7 +1,7 @@
 *** Settings ***
 Library                              HttpLibrary.HTTP
 Library                              String
-Resources                            api_variables.robot
+Resource                             api_variables.robot
 
 *** Variables ***
 
