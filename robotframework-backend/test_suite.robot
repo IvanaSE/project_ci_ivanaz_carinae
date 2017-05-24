@@ -1,6 +1,7 @@
 *** Settings ***
 Resource         client_operations.robot
 Resource         bedroom_operations.robot
+Resource         reservation_operations.robot
 
 
 *** Test cases ***
@@ -39,7 +40,7 @@ Test9 - Get All Bedrooms
     
 Test10 - Update Bedroom 
     Create New Bedroom
-    Update Bedroom Price
+    Update Bedroom Data Price
     
 Test11 - Delete Bedroom
     Create New Bedroom
