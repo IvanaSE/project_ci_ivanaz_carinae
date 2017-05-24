@@ -2,7 +2,7 @@
 Library                              HttpLibrary.HTTP
 Library                              String
 Library                              Collections
-Resources                            api_variables.robot
+Resource                             api_variables.robot
 
 *** Variables ***
 
