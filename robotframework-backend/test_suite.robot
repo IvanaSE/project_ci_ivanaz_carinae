@@ -37,3 +37,12 @@ Test8 - Get Bedroom
 Test9 - Get All Bedrooms    
     Get All Bedrooms
     
+Test10 - Update Bedroom 
+    Create New Bedroom
+    Update Bedroom
+    
+Test11 - Delete Bedroom
+    Create New Bedroom
+    Delete Bedroom    
+        
+    
