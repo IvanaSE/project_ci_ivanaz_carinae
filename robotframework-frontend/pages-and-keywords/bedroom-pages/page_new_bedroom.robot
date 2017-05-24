@@ -23,9 +23,14 @@ ${bedroomnew_option_bedroomtype_top_bed_king}    5
 Create new bedroom Top Bed King Vacant
     #Enter data
     ${room_name} =                           Generate Random String        15         [UPPER]
-    ${room_floor} =                          Generate Random String        1          [NUMBERS]
-    ${room_number} =                         Generate Random String        4          [NUMBERS]
-    ${room_price} =                          Generate Random String        5          [NUMBERS]
+    ${room_floor} =                          Generate Random String        1          123456789
+    # Make sure first digit is not 0 since initial 0 are removed
+    ${room_number_first}=                    Generate Random String        1          123456789
+    ${room_number_last}=                     Generate Random String        3          [NUMBERS]
+    ${room_number} =                         Catenate      SEPARATOR=      ${room_number_first}        ${room_number_last}    
+    ${room_price_first}=                     Generate Random String        1          123456789
+    ${room_price_last}=                      Generate Random String        4          [NUMBERS]
+    ${room_price} =                          Catenate      SEPARATOR=      ${room_price_first}          ${room_price_last}    
     Set Suite Variable                       ${room_name_suite}                       ${room_name}       
     Set Suite Variable                       ${room_floor_suite}                      ${room_floor}       
     Set Suite Variable                       ${room_number_suite}                     ${room_number}       
