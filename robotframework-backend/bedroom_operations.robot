@@ -33,14 +33,13 @@ Create Bedroom Data
     ${priceDaily_number_first}=         Generate Random String        1          123456789
     ${priceDaily_number_last}=          Generate Random String        2          [NUMBERS]
     ${priceDaily} =              Catenate      SEPARATOR=      ${priceDaily_number_first}        ${priceDaily_number_last}    
-    
     # Status = Busy
     ${statusId}=                  Set Variable                  2
     ${statusCode}=                Set Variable                  1  
-    ${statusName}=                Set Variable                  "BUSY"
+    ${statusName}=                Set Variable                  BUSY
     # Bedroom type = Top bed twin
     ${typeId}=                    Set Variable                  4
-    ${typeName}=                  Set Variable                  "TOP BED TWIN"
+    ${typeName}=                  Set Variable                  TOP BED TWIN
     ${dictionary_status}=         Create Dictionary     id=${statusId}    code=${statusCode}    name=${statusName}
     ${dictionary_id}=             Create Dictionary     id=${typeId}    name=${typeName}
     ${dictionary}=                Create Dictionary     id=${id}    description=${description}    floor=${floor}    number=${number}    priceDaily=${priceDaily}    bedroomStatusId=${dictionary_status}   typeBedroomId=${dictionary_id}
@@ -139,7 +138,6 @@ Update Bedroom Price
     ${priceDaily_number_first}=         Generate Random String        1          123456789
     ${priceDaily_number_last}=          Generate Random String        2          [NUMBERS]
     ${priceDaily} =              Catenate      SEPARATOR=      ${priceDaily_number_first}        ${priceDaily_number_last}    
-    
     ${request_body}=               Update Bedroom Data Price        ${bedroomBody}        ${newPrice}   
     # Set request body to updated bedroom and PUT          
     Create Http Context            ${http_context}                ${http_variable}
