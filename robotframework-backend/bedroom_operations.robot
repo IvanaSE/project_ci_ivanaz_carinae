@@ -101,3 +101,17 @@ Get All Bedrooms
     Log to Console                 ${status_code}
     Log to Console                 ${response_body}
     Should contain                 ${status_code}	                      ${status_code_OK} 
+    
+Delete Bedroom
+    Create Http Context            ${http_context}                  ${http_variable}
+    ${bedroomId}=                   Get ID of The Last Bedroom
+    Log to Console                 ${bedroomId}
+    ${delete_bedroom_endpoint}=     Catenate       SEPARATOR=        ${delete_bedroom_endpoint}        ${bedroomId}
+    DELETE                         ${delete_bedroom_endpoint}
+    ${status_code}=                Get Response Status
+    Log to Console                 ${status_code}
+    Should contain                 ${status_code}	                ${status_code_No_Content} 
+    # Assert that current last client doesn't contain the name of the recently created client
+    ${lastBedroom}=                 Get Last Created Bedroom
+    Should not contain             ${lastBedroom}                 ${room_description_suite}          
+    
