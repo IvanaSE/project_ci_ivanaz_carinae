@@ -18,7 +18,12 @@ Create new female client
     #Enter data
     ${client_name}=                          Generate Random String        10        [LOWER]
     ${client_email} =                        Catenate      SEPARATOR=      ${client_name}        @test.com    
-    ${client_security_number} =              Generate Random String        7          [NUMBERS]
+
+    # Make sure first digit is not 0 since initial 0 are removed
+    ${client_security_number_first}=         Generate Random String        1          123456789
+    ${client_security_number_last}=          Generate Random String        6          [NUMBERS]
+    ${client_security_number} =              Catenate      SEPARATOR=      ${client_security_number_first}        ${client_security_number_last}    
+
     Set Suite Variable                       ${client_name_suite}                      ${client_name}       
     Set Suite Variable                       ${client_email_suite}                     ${client_email}       
     Set Suite Variable                       ${client_security_number_suite}           ${client_security_number}       
