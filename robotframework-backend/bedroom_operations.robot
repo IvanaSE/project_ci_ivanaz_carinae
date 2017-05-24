@@ -138,7 +138,7 @@ Update Bedroom Price
     ${priceDaily_number_first}=         Generate Random String        1          123456789
     ${priceDaily_number_last}=          Generate Random String        2          [NUMBERS]
     ${priceDaily} =              Catenate      SEPARATOR=      ${priceDaily_number_first}        ${priceDaily_number_last}    
-    ${request_body}=               Update Bedroom Data Price        ${bedroomBody}        ${newPrice}   
+    ${request_body}=               Update Bedroom Data Price        ${bedroomBody}        ${priceDaily}   
     # Set request body to updated bedroom and PUT          
     Create Http Context            ${http_context}                ${http_variable}
     Set Request Header             Content-Type                   ${header_content_json}
