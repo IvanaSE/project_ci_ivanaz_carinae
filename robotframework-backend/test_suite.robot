@@ -42,8 +42,7 @@ Test10 - Update Bedroom
     Create New Bedroom
     Update Bedroom Data Price
     
-Test11 - Delete Bedroom
-    Create New Bedroom
-    Delete Bedroom    
+#Test11 - Delete Bedroom
+#    Create New Bedroom
+#    Delete Bedroom    
         
-    
