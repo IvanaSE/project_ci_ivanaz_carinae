@@ -28,8 +28,12 @@ Create Bedroom Data
     ${description}=               Generate Random String        15        [UPPER]
     Set Suite Variable            ${room_description_suite}               ${description}       
     ${floor}=                     Generate Random String        1          [NUMBERS]
-    ${number}=                    Generate Random String        4          [NUMBERS]
-    ${priceDaily}=                Generate Random String        3          [NUMBERS]
+    ${number}=                    Generate Random String        4          123456789
+    # Make sure first digit is not 0 
+    ${priceDaily_number_first}=         Generate Random String        1          123456789
+    ${priceDaily_number_last}=          Generate Random String        2          [NUMBERS]
+    ${priceDaily} =              Catenate      SEPARATOR=      ${priceDaily_number_first}        ${priceDaily_number_last}    
+    
     # Status = Busy
     ${statusId}=                  Set Variable                  2
     ${statusCode}=                Set Variable                  1  
@@ -101,3 +105,67 @@ Get All Bedrooms
     Log to Console                 ${status_code}
     Log to Console                 ${response_body}
     Should contain                 ${status_code}	                      ${status_code_OK} 
+    
+Update Bedroom Data Price    [Arguments]    ${bedroom}       ${update_value} 
+    ${id}=                        Get Json Value             ${bedroom}         /id
+    ${description}=               Get Json Value             ${bedroom}         /description
+    ${floor}=                     Get Json Value             ${bedroom}         /floor
+    ${number}=                    Get Json Value             ${bedroom}         /number
+    ${priceDaily}=                Set Variable               ${update_value}
+    Set Suite Variable            ${updated_price_suite}     ${priceDaily}       
+    ${statusId}=                  Get Json Value             ${bedroom}         /bedroomStatusId/id
+    ${statusCode}=                Get Json Value             ${bedroom}         /bedroomStatusId/code
+    ${statusName}=                Get Json Value             ${bedroom}         /bedroomStatusId/name
+    ${typeId}=                    Get Json Value             ${bedroom}         /typeBedroomId/id
+    ${typeName}=                  Get Json Value             ${bedroom}         /typeBedroomId/name
+    ${description}=               Remove String             ${description}        \"
+    ${statusName}=                Remove String             ${statusName}         \"
+    ${typeName}=                  Remove String             ${typeName}           \"
+    ${statusName}=                Remove String             ${statusName}         \\
+    ${typeName}=                  Remove String             ${typeName}           \\
+    ${dictionary_status}=         Create Dictionary         id=${statusId}    code=${statusCode}    name=${statusName}
+    ${dictionary_id}=             Create Dictionary         id=${typeId}    name=${typeName}
+    ${dictionary}=                Create Dictionary         id=${id}    description=${description}    floor=${floor}    number=${number}    priceDaily=${priceDaily}    bedroomStatusId=${dictionary_status}   typeBedroomId=${dictionary_id}
+    ${client_json}=               Stringify Json            ${dictionary}
+    Log to Console                \n"Updated json data:"
+    Log to Console                ${client_json}
+    [Return]                      ${client_json}       
+    
+Update Bedroom Price
+    # Get last created bedroom
+    ${bedroomBody}=                Get Last Created Bedroom
+    ${bedroomId}=                  Get Json Value                 ${bedroomBody}         /id            
+    # Generate new price and update bedroom data
+    ${priceDaily_number_first}=         Generate Random String        1          123456789
+    ${priceDaily_number_last}=          Generate Random String        2          [NUMBERS]
+    ${priceDaily} =              Catenate      SEPARATOR=      ${priceDaily_number_first}        ${priceDaily_number_last}    
+    
+    ${request_body}=               Update Bedroom Data Price        ${bedroomBody}        ${newPrice}   
+    # Set request body to updated bedroom and PUT          
+    Create Http Context            ${http_context}                ${http_variable}
+    Set Request Header             Content-Type                   ${header_content_json}
+    Set Request Header             Accept                         ${header_accept_all}        
+    Set Request Body               ${request_body}        
+    ${put_update_bedroom_endpoint}=     Catenate       SEPARATOR=      ${put_update_bedroom_endpoint}        ${bedroomId}
+    PUT                            ${put_update_bedroom_endpoint}
+    ${status_code}=                Get Response Status
+    Log to Console                 ${status_code}
+    Should contain                 ${status_code}	                  ${status_code_No_Content} 
+    # Assert that last created client contains the updated name
+    ${updatedBedroom}=              Get Last Created Bedroom
+    Log to Console                 ${updatedBedroom}
+    Log to Console                 ${updated_price_suite}
+    Should contain                 ${updatedBedroom}                 ${updated_price_suite}        
+    
+Delete Bedroom
+    Create Http Context            ${http_context}                  ${http_variable}
+    ${bedroomId}=                   Get ID of The Last Bedroom
+    Log to Console                 ${bedroomId}
+    ${delete_bedroom_endpoint}=     Catenate       SEPARATOR=        ${delete_bedroom_endpoint}        ${bedroomId}
+    DELETE                         ${delete_bedroom_endpoint}
+    ${status_code}=                Get Response Status
+    Log to Console                 ${status_code}
+    Should contain                 ${status_code}	                ${status_code_No_Content} 
+    # Assert that current last client doesn't contain the name of the recently created client
+    ${lastBedroom}=                 Get Last Created Bedroom
+    Should not contain             ${lastBedroom}                 ${room_description_suite}          
