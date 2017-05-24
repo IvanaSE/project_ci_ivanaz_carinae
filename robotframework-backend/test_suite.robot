@@ -40,7 +40,7 @@ Test9 - Get All Bedrooms
     
 Test10 - Update Bedroom 
     Create New Bedroom
-    Update Bedroom Data Price
+    Update Bedroom Price
     
 #Test11 - Delete Bedroom
 #    Create New Bedroom

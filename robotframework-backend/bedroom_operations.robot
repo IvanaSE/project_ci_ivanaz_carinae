@@ -133,7 +133,10 @@ Update Bedroom Data Price    [Arguments]    ${bedroom}       ${update_value}
 Update Bedroom Price
     # Get last created bedroom
     ${bedroomBody}=                Get Last Created Bedroom
-    ${bedroomId}=                  Get Json Value                 ${bedroomBody}         /id            
+    log to console                "testing bedroomBody"
+    log to console                    ${bedroomBody}
+    ${bedroomId}=                  Get Json Value                 ${bedroomBody}         /id  
+    log to console                ${bedroomId}          
     # Generate new price and update bedroom data
     ${priceDaily_number_first}=         Generate Random String        1          123456789
     ${priceDaily_number_last}=          Generate Random String        2          [NUMBERS]
@@ -150,7 +153,7 @@ Update Bedroom Price
     Log to Console                 ${status_code}
     Should contain                 ${status_code}	                  ${status_code_No_Content} 
     # Assert that last created client contains the updated name
-    ${updatedBedroom}=              Get Last Created Bedroom
+    ${updatedBedroom}=             Get Last Created Bedroom
     Log to Console                 ${updatedBedroom}
     Log to Console                 ${updated_price_suite}
     Should contain                 ${updatedBedroom}                 ${updated_price_suite}        
