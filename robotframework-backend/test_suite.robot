@@ -2,6 +2,7 @@
 Resource         client_operations.robot
 Resource         bedroom_operations.robot
 Resource         reservation_operations.robot
+Resource         user_operations.robot
 
 
 *** Test cases ***
@@ -42,7 +43,36 @@ Test10 - Update Bedroom
     Create New Bedroom
     Update Bedroom Price
     
-#Test11 - Delete Bedroom
-#    Create New Bedroom
-#    Delete Bedroom    
-        
+Test11 - Delete Bedroom
+    Create New Bedroom
+    Delete Bedroom    
+
+#User operations    
+Test12 - Create User
+    Create New Client
+    Create New User
+    
+Test13 - Get User
+    Create New Client
+    Create New User
+    Get Last Created User
+    
+Test14 - Get All Users    
+    Get All Bedrooms
+    
+Test15 - Delete User
+    Create New Client
+    Create New User
+    Delete User
+
+# Reservation operations
+Test16 - Create Reservation
+    Create New Client
+    Create New Bedroom
+    Create New Reservation
+
+Test17 - Delete Reservation
+    Create New Client
+    Create New Bedroom
+    Create New Reservation
+    Delete Reservation 

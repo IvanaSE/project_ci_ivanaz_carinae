@@ -93,6 +93,7 @@ Get Last Created Client
     Log to Console             \n"Last created client:"
     Log to Console             ${clientBody}
     Should contain             ${status_code}	                      ${status_code_OK} 
+    Set Suite Variable         ${client_body_suite}                   ${client_body}
     [Return]                   ${client_body}
         
 Get Total Number of Clients
@@ -152,4 +153,4 @@ Delete Client
     Should contain                 ${status_code}	                ${status_code_No_Content} 
     # Assert that current last client doesn't contain the name of the recently created client
     ${lastClient}=                 Get Last Created Client
-    Should not contain             ${lastClient}                 ${name_suite}           
+Should not contain ${lastClient} ${name_suite} 
