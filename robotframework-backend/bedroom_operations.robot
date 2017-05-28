@@ -84,6 +84,7 @@ Get Last Created Bedroom
     Log to Console                   ${status_code}
     Log to Console                   ${bedroom_body}
     Should contain                   ${status_code}	                      ${status_code_OK} 
+    Set Suite Variable               ${bedroom_body_suite}                   ${bedroom_body}
     [Return]                         ${bedroom_body}
 
 Get Total Number of Bedrooms
